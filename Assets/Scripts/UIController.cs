@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -9,8 +10,21 @@ public class UIController : MonoBehaviour
     public GameObject painelDerrota,painelPausa,painelConfirmarSair;
     //bool dos paineis
     bool painelPausaOpen,painelConfirmarSairOpen;
+    //
+    public Text textInvulneravel;
+    //Coisas dos PowerUps
+    //Imã
+    public Slider cooldownIma;
+    public float timerIma,tempoIma;
+    bool isImaVisivel;
+    //
     void Start()
     {
+        timerIma=tempoIma=GameController.gameController.DuracaoIma;
+        if(cooldownIma!=null){
+            isImaVisivel=false;
+            cooldownIma.gameObject.SetActive(false);
+        }
         if(painelPausa!=null){
             painelPausaOpen=false;
             painelPausa.SetActive(false);
@@ -29,7 +43,19 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(cooldownIma!=null){
+            if(isImaVisivel){
+                if(timerIma>0){
+                    timerIma-=Time.deltaTime;
+                    cooldownIma.value=timerIma;
+                }
+                else{
+                    isImaVisivel=false;
+                    cooldownIma.gameObject.SetActive(false);
+                    timerIma=tempoIma;
+                }
+            }
+        }
     }
     public void Perder(){
         painelDerrota.SetActive(true);
@@ -55,5 +81,12 @@ public class UIController : MonoBehaviour
     public void FechaConfirmacaoSaida(){
         painelConfirmarSair.SetActive(false);
         painelConfirmarSairOpen=false;
+    }
+    public void FicaInvulneravel(bool caso){
+        textInvulneravel.gameObject.SetActive(caso);
+    }
+    public void AtivaIma(){
+        cooldownIma.gameObject.SetActive(true);
+        isImaVisivel=true;
     }
 }

@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     float pistaSpeed =4f;
     float tempoPraAcabar =2f;
     public float valorFileira = 4;
+    public float DuracaoIma = 10f;
     void Awake(){
         GameController.gameController=this;
     }
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
         Pista.speed = 0f;
         Invoke("PararTempo",tempoPraAcabar);
         Invoke("AbrirMenuDerrota",tempoPraAcabar);
+        Vibration.Vibrate((long)tempoPraAcabar*1000);
     }
     public void PararTempo(){
         Time.timeScale=0;

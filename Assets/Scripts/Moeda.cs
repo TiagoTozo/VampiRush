@@ -23,9 +23,10 @@ public class Moeda : MonoBehaviour
             if(dir.magnitude<15f&&irParaPlayer==false){
                 irParaPlayer=true;
             }
-            if(irParaPlayer){
-                transform.position+=(dir.normalized*speed*Time.deltaTime);
-            }
+        }
+        if(irParaPlayer){
+            Vector3 dir = player.transform.position - transform.position;
+            transform.position+=(dir.normalized*speed*Time.deltaTime);
         }
     }
 }

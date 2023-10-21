@@ -14,6 +14,7 @@ public class PlayerRB : MonoBehaviour
     float valorFileira ;
     bool isPulando;
     bool podeMorrer;
+    bool isInvulnevel;
     float tempoMorte = 10f;
     int nMoedas = 0;
     float timer =0;
@@ -21,9 +22,11 @@ public class PlayerRB : MonoBehaviour
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
     public bool canInput,imaAtivo;
+    public float timerIma,tempoIma;
        
     void Start()
     {
+        timerIma=tempoIma=GameController.gameController.DuracaoIma;
         GameController.gameController.jogador=this;
         imaAtivo=false;
         valorFileira=GameController.gameController.valorFileira;
@@ -41,6 +44,18 @@ public class PlayerRB : MonoBehaviour
     {
         timer+=Time.deltaTime;
         textoTimer.text= timer.ToString("Pontos: 0");
+        
+        if(imaAtivo){
+            if(timerIma>0){
+                timerIma-=Time.deltaTime;
+            }
+            else{
+                imaAtivo=false;
+                timerIma=tempoIma;
+            }
+        }
+        
+        
         #if UNITY_EDITOR
         if(canInput){
             if(Input.GetKeyDown(KeyCode.Space)){
@@ -159,35 +174,50 @@ public class PlayerRB : MonoBehaviour
                     }
                 }
             }
-        }
-        #endif
-    }
-    void OnCollisionEnter(Collision colisao){
-        if(colisao.collider.CompareTag("Moeda")){
-            nMoedas++;
-            textoMoedas.text=nMoedas.ToString("Moedas: 0");
-            Destroy(colisao.collider.gameObject);
-        }
-        else{
-            if(colisao.collider.CompareTag("Chao")){
-                isPulando=false;
-            }
-            else{
-                if(colisao.collider.CompareTag("Obstaculo")){
-                    //Debug.Log("bati num obstaculo");
-                    if(!podeMorrer){
-                        Handheld.Vibrate();
-                        TomarHit();
+            if(Input.touchCount==5){
+                Touch touch = Input.GetTouch(4);
+                if(touch.phase == TouchPhase.Began){
+                    if(!isInvulnevel){
+                        isInvulnevel=true;
+                        GameController.gameController.uiController.FicaInvulneravel(true);
                     }
                     else{
-                        Perder();
+                        isInvulnevel=false;
+                        GameController.gameController.uiController.FicaInvulneravel(false);
                     }
                 }
             }
         }
+        #endif
+    }
+    void OnCollisionEnter(Collision colisao){
+        if(colisao.collider.CompareTag("Chao")){
+            isPulando=false;
+        }
+        else{
+            if(colisao.collider.CompareTag("Obstaculo")){
+                //Debug.Log("bati num obstaculo");
+                if(!podeMorrer){
+                    Handheld.Vibrate();
+                    TomarHit();
+                }
+                else{
+                    Perder();
+                }
+            }
+        }
+    }
+    void OnTriggerEnter(Collider collider){
+        if(collider.CompareTag("Moeda")){
+            nMoedas++;
+            textoMoedas.text=nMoedas.ToString("Moedas: 0");
+            Destroy(collider.gameObject);
+        }
     }
     void TomarHit(){
-        podeMorrer=true;
+        if(!isInvulnevel){
+            podeMorrer=true;
+        }
         Invoke("RestauraVida",tempoMorte);
         rb.constraints=RigidbodyConstraints.FreezePositionY;
         rb.detectCollisions=false;
@@ -208,11 +238,7 @@ public class PlayerRB : MonoBehaviour
         GameController.gameController.vampiro.AlcancarPlayer();
         GameController.gameController.Perder();
     }
-    public void AtivarIma(float tempo){
+    public void AtivarIma(){
         imaAtivo=true;
-        Invoke("DesligaIma",tempo);
-    }
-    public void DesligaIma(){
-        imaAtivo=false;
     }
 }

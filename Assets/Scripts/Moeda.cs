@@ -6,10 +6,12 @@ public class Moeda : MonoBehaviour
 {
     GameObject player;
     PlayerRB pScript;
+    bool irParaPlayer;
     float speed = 10f;
     // Start is called before the first frame update
     void Start()
     {
+        irParaPlayer = false;
         player = GameController.gameController.jogador.gameObject;
         pScript = GameController.gameController.jogador; 
     }
@@ -18,7 +20,10 @@ public class Moeda : MonoBehaviour
     void Update()
     {   if(pScript.imaAtivo==true){
             Vector3 dir = player.transform.position - transform.position;
-            if(dir.magnitude<15f){
+            if(dir.magnitude<15f&&irParaPlayer==false){
+                irParaPlayer=true;
+            }
+            if(irParaPlayer){
                 transform.position+=(dir.normalized*speed*Time.deltaTime);
             }
         }

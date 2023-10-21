@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public static GameController gameController;
     float pistaSpeed =4f;
     float tempoPraAcabar =2f;
-    public float valorFileira = 5;
+    public float valorFileira = 4;
     void Awake(){
         GameController.gameController=this;
     }
@@ -40,9 +40,6 @@ public class GameController : MonoBehaviour
     }
     public void AbrirMenuDerrota(){
         uiController.Perder();
-    }
-    public void Sair(){
-        Application.Quit();
     }
     public void Restart(){
         Pista.speed=pistaSpeed;

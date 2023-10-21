@@ -176,6 +176,7 @@ public class PlayerRB : MonoBehaviour
                 if(colisao.collider.CompareTag("Obstaculo")){
                     //Debug.Log("bati num obstaculo");
                     if(!podeMorrer){
+                        Handheld.Vibrate();
                         TomarHit();
                     }
                     else{

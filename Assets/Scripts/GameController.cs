@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     float tempoPraAcabar =2f;
     public float valorFileira = 4;
     public float DuracaoIma = 10f;
+    public float DuracaoCapa = 8f;
+    public float DuracaoAlho = 6f;
     void Awake(){
         GameController.gameController=this;
     }

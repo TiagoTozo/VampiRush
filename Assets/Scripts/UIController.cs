@@ -16,17 +16,33 @@ public class UIController : MonoBehaviour
     //Imã
     public Slider cooldownIma;
     public float timerIma,tempoIma;
-    bool isImaVisivel;
+    public Slider cooldownCapa;
+    public float timerCapa,tempoCapa;
+    public Slider cooldownAlho;
+    public float timerAlho,tempoAlho;
+    bool isImaVisivel,isCapaVisivel,isAlhoVisivel;
     //
     void Start()
     {
         if(GameController.gameController!=null){
             timerIma=tempoIma=GameController.gameController.DuracaoIma;
+            timerCapa=tempoCapa=GameController.gameController.DuracaoCapa;
+            timerAlho=tempoAlho=GameController.gameController.DuracaoAlho;
         }
         if(cooldownIma!=null){
             cooldownIma.maxValue=tempoIma;
             isImaVisivel=false;
             cooldownIma.gameObject.SetActive(false);
+        }
+        if(cooldownCapa!=null){
+            cooldownCapa.maxValue=tempoCapa;
+            isCapaVisivel=false;
+            cooldownCapa.gameObject.SetActive(false);
+        }
+        if(cooldownAlho!=null){
+            cooldownAlho.maxValue=tempoAlho;
+            isAlhoVisivel=false;
+            cooldownAlho.gameObject.SetActive(false);
         }
         if(painelPausa!=null){
             painelPausaOpen=false;
@@ -56,6 +72,32 @@ public class UIController : MonoBehaviour
                     isImaVisivel=false;
                     cooldownIma.gameObject.SetActive(false);
                     timerIma=tempoIma;
+                }
+            }
+        }
+        if(cooldownCapa!=null){
+            if(isCapaVisivel){
+                if(timerCapa>0){
+                    timerCapa-=Time.deltaTime;
+                    cooldownCapa.value=timerCapa;
+                }
+                else{
+                    isCapaVisivel=false;
+                    cooldownCapa.gameObject.SetActive(false);
+                    timerCapa=tempoCapa;
+                }
+            }
+        }
+        if(cooldownAlho!=null){
+            if(isAlhoVisivel){
+                if(timerAlho>0){
+                    timerAlho-=Time.deltaTime;
+                    cooldownAlho.value=timerAlho;
+                }
+                else{
+                    isAlhoVisivel=false;
+                    cooldownAlho.gameObject.SetActive(false);
+                    timerAlho=tempoAlho;
                 }
             }
         }
@@ -91,6 +133,14 @@ public class UIController : MonoBehaviour
     public void AtivaIma(){
         cooldownIma.gameObject.SetActive(true);
         isImaVisivel=true;
+    }
+    public void AtivaCapa(){
+        cooldownCapa.gameObject.SetActive(true);
+        isCapaVisivel=true;
+    }
+    public void AtivaAlho(){
+        cooldownAlho.gameObject.SetActive(true);
+        isAlhoVisivel=true;
     }
     public void AtualizarMoeda(int nMoedas){
         textMoedas.text=nMoedas.ToString("Moedas: 0");

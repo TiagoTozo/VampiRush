@@ -341,9 +341,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8616960963057041562}
+  - component: {fileID: 8137879782242267843}
   m_Layer: 0
   m_Name: Mesa
-  m_TagString: Untagged
+  m_TagString: Obstaculo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -357,7 +358,7 @@ Transform:
   m_GameObject: {fileID: 4350796729327865476}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.703381, y: 0, z: 4.684306}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -368,6 +369,27 @@ Transform:
   - {fileID: 1048414725099281001}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8137879782242267843
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4350796729327865476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1452618, y: 1.6385102, z: 1.7600209}
+  m_Center: {x: -0.02579999, y: 0.81347525, z: -0.034546316}
 --- !u!1 &5203212141274352876
 GameObject:
   m_ObjectHideFlags: 0

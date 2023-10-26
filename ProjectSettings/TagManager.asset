@@ -8,7 +8,7 @@ TagManager:
   - Chao
   - Obstaculo
   - Moeda
-  - Jogador
+  - Ima
   layers:
   - Default
   - TransparentFX

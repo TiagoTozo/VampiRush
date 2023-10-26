@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CastleModule2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7816015619dd4854dbda44a187499db8, type: 3}
+      propertyPath: m_TagString
+      value: Chao
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -62,6 +66,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7816015619dd4854dbda44a187499db8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7672600234867761959}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7816015619dd4854dbda44a187499db8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2959967834748817634}
   m_SourcePrefab: {fileID: 100100000, guid: 7816015619dd4854dbda44a187499db8, type: 3}
 --- !u!4 &2852177021497330995 stripped
 Transform:
@@ -129,6 +136,27 @@ MonoBehaviour:
   - {fileID: 5561583092821767631, guid: 90698b0879f4d8948bf1e079b33a8d15, type: 3}
   - {fileID: 8353977815640027828, guid: 4b4ccb9978e6410409997f8faba669cc, type: 3}
   - {fileID: 6586869113866963826, guid: db84a9b859ab11a42b79cc90131cc92c, type: 3}
+--- !u!65 &2959967834748817634
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3233346278273390473}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 13.399582, y: 0.6557071, z: 30.634138}
+  m_Center: {x: 0.2757187, y: -0.17214644, z: -14.817069}
 --- !u!1001 &6375757506430513667
 PrefabInstance:
   m_ObjectHideFlags: 0

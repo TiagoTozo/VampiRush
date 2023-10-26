@@ -34,7 +34,7 @@ public class Moeda : MonoBehaviour
         if(collider.CompareTag("Player")){
             Moeda.TotalMoedas++;
             GameController.gameController.uiController.AtualizarMoeda(TotalMoedas);
-            Destroy(collider.gameObject);
+            Destroy(gameObject);
         }
     }
 }

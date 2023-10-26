@@ -11,31 +11,38 @@ public class PlayerRB : MonoBehaviour
     int fileira;
     Rigidbody rb;
     [SerializeField] float pulo;
-    float valorFileira ;
+    float valorFileira;
     bool isPulando;
     bool podeMorrer;
     bool isInvulnevel;
     float tempoMorte = 10f;
-    int nMoedas = 0;
     float timer =0;
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
-    public bool canInput,imaAtivo;
+    public bool canInput;
     public float timerIma,tempoIma;
+    public bool imaAtivo;
+    public float timerCapa,tempoCapa;
+    public bool capaAtiva;
+    public float timerAlho,tempoAlho;
+    public bool alhoAtivo;
        
     void Start()
     {
         timerIma=tempoIma=GameController.gameController.DuracaoIma;
+        timerCapa=tempoCapa=GameController.gameController.DuracaoCapa;
+        timerAlho=tempoAlho=GameController.gameController.DuracaoAlho;
         GameController.gameController.jogador=this;
         imaAtivo=false;
+        alhoAtivo=false;
+        capaAtiva=false;
         valorFileira=GameController.gameController.valorFileira;
         canInput=true;
         dragDistance = Screen.height * 5 / 100; //dragDistance is 15% height of the screen
         podeMorrer=false;
         isPulando=false;
         fileira=0;
-        pulo = 12f;
         rb=GetComponent<Rigidbody>();
     }
 
@@ -45,6 +52,7 @@ public class PlayerRB : MonoBehaviour
         timer+=Time.deltaTime;
         textoTimer.text= timer.ToString("Pontos: 0");
         
+        //timer Ima
         if(imaAtivo){
             if(timerIma>0){
                 timerIma-=Time.deltaTime;
@@ -52,6 +60,26 @@ public class PlayerRB : MonoBehaviour
             else{
                 imaAtivo=false;
                 timerIma=tempoIma;
+            }
+        }
+        //timer Alho
+        if(alhoAtivo){
+            if(timerAlho>0){
+                timerAlho-=Time.deltaTime;
+            }
+            else{
+                alhoAtivo=false;
+                timerAlho=tempoAlho;
+            }
+        }
+        //timer Capa
+        if(capaAtiva){
+            if(timerCapa>0){
+                timerCapa-=Time.deltaTime;
+            }
+            else{
+                capaAtiva=false;
+                timerCapa=tempoCapa;
             }
         }
         
@@ -209,13 +237,13 @@ public class PlayerRB : MonoBehaviour
     }
     
     void TomarHit(){
-        if(!isInvulnevel){
+        if(!isInvulnevel&&!alhoAtivo){
             podeMorrer=true;
         }
         Invoke("RestauraVida",tempoMorte);
         rb.constraints=RigidbodyConstraints.FreezePositionY;
         rb.detectCollisions=false;
-        Invoke("VoltaAColidir",1f);
+        Invoke("VoltaAColidir",2f);
         GameController.gameController.vampiro.AproximarPlayer();
     }
     void RestauraVida(){
@@ -234,5 +262,11 @@ public class PlayerRB : MonoBehaviour
     }
     public void AtivarIma(){
         imaAtivo=true;
+    }
+    public void AtivarCapa(){
+        capaAtiva=true;
+    }
+    public void AtivarAlho(){
+        alhoAtivo=true;
     }
 }

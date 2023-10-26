@@ -12,7 +12,7 @@ public class Pista : MonoBehaviour
     public static int nPistas;
     static Pista ultimaPista;
     public int tipo; //1 tem 2 fileiras de obstaculos e 2 tem 3 fileiras
-    public GameObject OutraPista;
+    public GameObject [] OutrasPistas;
     
     public GameObject [] obstaculos;
     public GameObject[] spawnPoints;
@@ -47,13 +47,12 @@ public class Pista : MonoBehaviour
     }
     public void SpawnaPista(){
         if(nPistas<5){
-            GameObject novaPista = Instantiate(OutraPista,inicioProxPista.transform);
+            GameObject novaPista = Instantiate(OutrasPistas[Random.Range(0,OutrasPistas.Length)],inicioProxPista.transform);
             novaPista.transform.SetParent(null);
             nPistas++;
         }
     }
     void OnTriggerEnter(Collider collider){
-        Debug.Log("Colidi");
         if(collider.CompareTag("Barreira")){
             Destroy(gameObject);
             nPistas--;
@@ -64,7 +63,7 @@ public class Pista : MonoBehaviour
         if(Random.Range(0,20)<5){
             int lugar = Random.Range(0,spawnPowerUps.Length);
             int powerUp = Random.Range(0,powerUps.Length);
-            Instantiate(powerUps[powerUp],spawnPowerUps[lugar].transform);
+            Instantiate(powerUps[powerUp],spawnPowerUps[lugar].transform);// adicionar rand no x
         }
     }
 }

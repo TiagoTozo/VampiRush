@@ -37,13 +37,14 @@ public class Vampiro : MonoBehaviour
             else{
                 if(afastaPlayer){
                     alvo = jogador.transform.position-new Vector3(0,0,distForaTela);
+                    alvo.y=0;
                 }
             }
         }
         Vector3 dir = alvo-transform.position;
-        if(afastaPlayer){
-            dir.y=0;
-        }
+        //if(afastaPlayer){
+        //    transform.position=new Vector3(transform.position.x,1,transform.position.z);
+        //}
         if(dir.magnitude>0.5f)
             transform.Translate(dir.normalized*speed*Time.deltaTime);
         

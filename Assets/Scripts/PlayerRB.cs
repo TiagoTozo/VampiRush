@@ -207,13 +207,7 @@ public class PlayerRB : MonoBehaviour
             }
         }
     }
-    void OnTriggerEnter(Collider collider){
-        if(collider.CompareTag("Moeda")){
-            nMoedas++;
-            textoMoedas.text=nMoedas.ToString("Moedas: 0");
-            Destroy(collider.gameObject);
-        }
-    }
+    
     void TomarHit(){
         if(!isInvulnevel){
             podeMorrer=true;

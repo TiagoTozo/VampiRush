@@ -8,6 +8,7 @@ public class Moeda : MonoBehaviour
     PlayerRB pScript;
     bool irParaPlayer;
     float speed = 10f;
+    static int TotalMoedas = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,4 +30,12 @@ public class Moeda : MonoBehaviour
             transform.position+=(dir.normalized*speed*Time.deltaTime);
         }
     }
+    void OnTriggerEnter(Collider collider){
+        if(collider.CompareTag("Player")){
+            Moeda.TotalMoedas++;
+            GameController.gameController.uiController.AtualizarMoeda(TotalMoedas);
+            Destroy(collider.gameObject);
+        }
+    }
 }
+

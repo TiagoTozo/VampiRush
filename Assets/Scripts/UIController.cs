@@ -10,8 +10,8 @@ public class UIController : MonoBehaviour
     public GameObject painelDerrota,painelPausa,painelConfirmarSair;
     //bool dos paineis
     bool painelPausaOpen,painelConfirmarSairOpen;
-    //
-    public Text textInvulneravel;
+    //Textos
+    public Text textInvulneravel,textMoedas;
     //Coisas dos PowerUps
     //Imã
     public Slider cooldownIma;
@@ -20,8 +20,11 @@ public class UIController : MonoBehaviour
     //
     void Start()
     {
-        timerIma=tempoIma=GameController.gameController.DuracaoIma;
+        if(GameController.gameController!=null){
+            timerIma=tempoIma=GameController.gameController.DuracaoIma;
+        }
         if(cooldownIma!=null){
+            cooldownIma.maxValue=tempoIma;
             isImaVisivel=false;
             cooldownIma.gameObject.SetActive(false);
         }
@@ -88,5 +91,8 @@ public class UIController : MonoBehaviour
     public void AtivaIma(){
         cooldownIma.gameObject.SetActive(true);
         isImaVisivel=true;
+    }
+    public void AtualizarMoeda(int nMoedas){
+        textMoedas.text=nMoedas.ToString("Moedas: 0");
     }
 }

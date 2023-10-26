@@ -19,17 +19,17 @@ public class PowerUps : MonoBehaviour
     {
         
     }
-    void OnCollisionEnter(Collision colisao){
-        if(colisao.collider.CompareTag("Player")){
+    void OnTriggerEnter(Collider collider){
+        if(collider.CompareTag("Player")){
             switch(tipo){
                 case "Ima":{
-                    AtivaIma(colisao.collider); 
+                    AtivaIma(collider); 
                 }break;
                 case "Capa":{
-                    AtivaCapa(colisao.collider);
+                    AtivaCapa(collider);
                 }break;
                 case "Alho":{
-                    AtivaAlho(colisao.collider);
+                    AtivaAlho(collider);
                 }break;
                 case null :break;
 

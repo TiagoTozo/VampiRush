@@ -222,28 +222,29 @@ public class PlayerRB : MonoBehaviour
         if(colisao.collider.CompareTag("Chao")){
             isPulando=false;
         }
-        else{
-            if(colisao.collider.CompareTag("Obstaculo")){
-                //Debug.Log("bati num obstaculo");
-                if(!podeMorrer){
-                    Handheld.Vibrate();
-                    TomarHit();
-                }
-                else{
+    }
+    void OnTriggerEnter(Collider collider){
+        if(collider.CompareTag("Obstaculo")){
+            //Debug.Log("bati num obstaculo");
+            if(!podeMorrer){
+                Handheld.Vibrate();
+                TomarHit();
+            }
+            else{
+                if(!alhoAtivo)
                     Perder();
-                }
             }
         }
     }
     
     void TomarHit(){
-        if(!isInvulnevel&&!alhoAtivo){
+        if(!isInvulnevel){
             podeMorrer=true;
         }
         Invoke("RestauraVida",tempoMorte);
-        rb.constraints=RigidbodyConstraints.FreezePositionY;
-        rb.detectCollisions=false;
-        Invoke("VoltaAColidir",2f);
+        //rb.constraints=RigidbodyConstraints.FreezePositionY;
+        //rb.detectCollisions=false;
+        //Invoke("VoltaAColidir",2f);
         GameController.gameController.vampiro.AproximarPlayer();
     }
     void RestauraVida(){

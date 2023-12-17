@@ -634,7 +634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &219509600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1452,7 +1452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8, y: -17}
+  m_AnchoredPosition: {x: 17, y: -17}
   m_SizeDelta: {x: 1000, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411326848
@@ -1482,15 +1482,15 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 80
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Carmille (protagonista) - Tiago Tozo\nVampiro - Gabriel Le\xE3o\nPistas
-    - Lucas Baltazar\nAssets gerais - Gabriel Le\xE3o e Stefano\nPrograma\xE7\xE3o
-    - Tiago Tozo"
+  m_Text: "Gabriel Le\xE3o -- Assets de obstaculos e do vampiro, Ui\nLucas Baltazar
+    -- Assets das pistas e UI\nStefano -- Assets do piano,alho e capa\nTiago Tozo
+    -- Programa\xE7\xE3o, modelo da protagonista, montagem na unity"
 --- !u!222 &411326849
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4418,7 +4418,7 @@ GameObject:
   - component: {fileID: 1447078717}
   - component: {fileID: 1447078716}
   m_Layer: 5
-  m_Name: BotaoDespausar
+  m_Name: BotaoFechaCreditos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

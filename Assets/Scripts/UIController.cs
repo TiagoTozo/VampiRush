@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    //public static UIController uiController;
     //paineis
-    public GameObject painelDerrota,painelPausa,painelConfirmarSair;
+    public GameObject painelDerrota,painelPausa,painelConfirmarSair,painelCreditos,painelAudio;
     //bool dos paineis
-    bool painelPausaOpen,painelConfirmarSairOpen;
+    bool painelPausaOpen,painelConfirmarSairOpen,painelCreditosOpen,painelAudioOpen;
     //Textos
     public Text textInvulneravel,textMoedas;
+    //
+    public Button botaoShake;
+    public Sprite canShake,cantShake;
     //Coisas dos PowerUps
     //Imã
     public Slider cooldownIma;
@@ -22,6 +27,15 @@ public class UIController : MonoBehaviour
     public float timerAlho,tempoAlho;
     bool isImaVisivel,isCapaVisivel,isAlhoVisivel;
     //
+    /*void Awake(){
+        if(uiController==null){
+            uiController=this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else{
+            Destroy(gameObject);
+        }
+    }*/
     void Start()
     {
         if(GameController.gameController!=null){
@@ -54,6 +68,17 @@ public class UIController : MonoBehaviour
         }
         if(painelDerrota!=null){
             painelDerrota.SetActive(false);
+        }
+        if(painelCreditos!=null){
+            painelCreditosOpen=false;
+            painelCreditos.SetActive(false);
+        }
+        if(painelAudio!=null){
+            painelAudioOpen=false;
+            painelAudio.SetActive(false);
+        }
+        if(botaoShake!=null){
+            botaoShake.image.sprite=canShake;
         }
         if(GameController.gameController!=null)
             GameController.gameController.uiController=this;
@@ -105,13 +130,26 @@ public class UIController : MonoBehaviour
     public void Perder(){
         painelDerrota.SetActive(true);
     }
-    public void Pausar(){
-        painelPausa.SetActive(true);
-        painelPausaOpen=true;
-    }
-    public void Despausar(){
-        painelPausa.SetActive(false);
-        painelPausaOpen=false;
+    public void InteragirPausar(){
+        if(painelPausaOpen==false){
+            painelPausa.SetActive(true);
+            painelPausaOpen=true;
+        }
+        else{
+            painelPausa.SetActive(false);
+            painelPausaOpen=false;
+            {
+                painelConfirmarSair.SetActive(false);
+                painelConfirmarSairOpen=false;
+                if(painelCreditos!=null){
+                    painelCreditos.SetActive(false);
+                    painelCreditosOpen=false;
+                }
+                painelAudio.SetActive(false);
+                painelAudioOpen=false;
+
+            }
+        }
     }
     public void IrProJogo(){
         SceneManager.LoadScene("Jogo");
@@ -144,5 +182,36 @@ public class UIController : MonoBehaviour
     }
     public void AtualizarMoeda(int nMoedas){
         textMoedas.text=nMoedas.ToString("Moedas: 0");
+    }
+    public void InterageCreditos(){
+        if(painelCreditosOpen){
+            painelCreditos.SetActive(false);
+            painelCreditosOpen=false;
+        }
+        else{
+            painelCreditos.SetActive(true);
+            painelCreditosOpen=true;
+        }
+    }
+    public void InteragirAudio(){
+        if(painelAudioOpen){
+            painelAudio.SetActive(false);
+            painelAudioOpen=false;
+            
+        }
+        else{
+            painelAudio.SetActive(true);
+            painelAudioOpen=true;
+        }
+    }
+    public void InteragirShake(){
+        if(GameController.gameController.canVibrate){
+            GameController.gameController.canVibrate=false;
+            botaoShake.image.sprite=cantShake;
+        }
+        else{
+            GameController.gameController.canVibrate=true;
+            botaoShake.image.sprite=canShake;
+        }
     }
 }

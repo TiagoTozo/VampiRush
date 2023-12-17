@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerRB : MonoBehaviour
 {
     //Tirar essas porras de UI daqui depois
-    public Text textoTimer,textoMoedas;
+    public Text textoTimer;
     int fileira;
     Rigidbody rb;
     [SerializeField] float pulo;
@@ -17,6 +16,7 @@ public class PlayerRB : MonoBehaviour
     bool isInvulnevel;
     float tempoMorte = 10f;
     float timer =0;
+    float timerTroca=0, timerVelocidade=0;
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
@@ -27,6 +27,11 @@ public class PlayerRB : MonoBehaviour
     public bool capaAtiva;
     public float timerAlho,tempoAlho;
     public bool alhoAtivo;
+    public AudioController audioController;
+    int contadorClicks;
+
+    public GameObject carmilleChild;
+    Animator animator;
        
     void Start()
     {
@@ -44,13 +49,30 @@ public class PlayerRB : MonoBehaviour
         isPulando=false;
         fileira=0;
         rb=GetComponent<Rigidbody>();
+        if(rb==null){
+            Debug.LogError("Personagem sem rigidbody");
+        }
+        animator=carmilleChild.GetComponent<Animator>();
+        if(animator==null){
+            Debug.LogError("Personagem sem animator");
+        }
+        audioController.gritoInicio.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
         timer+=Time.deltaTime;
-        textoTimer.text= timer.ToString("Pontos: 0");
+        if(timer-timerTroca>=30){
+            timerTroca=timer;
+            Pista.TrocaTipoPista();
+        }
+        if(timer-timerVelocidade>=10){
+            timerVelocidade=timer;
+            Pista.Acelerar();
+        }
+        textoTimer.text= (timer/200f).ToString("F3")+" Km";
+        
         
         //timer Ima
         if(imaAtivo){
@@ -90,6 +112,7 @@ public class PlayerRB : MonoBehaviour
                 if(!isPulando){
                     rb.AddForce(Vector3.up*pulo,ForceMode.Impulse);
                     isPulando=true;
+                    animator.SetTrigger("Jumped");
                 }
             }
             if(Input.GetKeyDown(KeyCode.A)){
@@ -100,10 +123,12 @@ public class PlayerRB : MonoBehaviour
                     if(fileira==0){
                         fileira=-1;
                         rb.Move(new Vector3(-valorFileira,transform.position.y,0),Quaternion.identity);
+                        audioController.trocaFaixa.Play();
                     }
                     else{
                         fileira=0;
                         rb.Move(new Vector3(0,transform.position.y,0),Quaternion.identity);
+                        audioController.trocaFaixa.Play();
                     }
                 }
             }
@@ -115,10 +140,12 @@ public class PlayerRB : MonoBehaviour
                     if(fileira==0){
                         fileira=1;
                         rb.Move(new Vector3(valorFileira,transform.position.y,0),Quaternion.identity);
+                        audioController.trocaFaixa.Play();
                     }
                     else{
                         fileira=0;
                         rb.Move(new Vector3(0,transform.position.y,0),Quaternion.identity);
+                        audioController.trocaFaixa.Play();
                     }
                 }
             }
@@ -157,10 +184,12 @@ public class PlayerRB : MonoBehaviour
                                     if(fileira==0){
                                         fileira=1;
                                         rb.Move(new Vector3(valorFileira,transform.position.y,0),Quaternion.identity);
+                                        audioController.trocaFaixa.Play();
                                     }
                                     else{
                                         fileira=0;
                                         rb.Move(new Vector3(0,transform.position.y,0),Quaternion.identity);
+                                        audioController.trocaFaixa.Play();
                                     }
                                 }
                             }
@@ -173,10 +202,12 @@ public class PlayerRB : MonoBehaviour
                                     if(fileira==0){
                                         fileira=-1;
                                         rb.Move(new Vector3(-valorFileira,transform.position.y,0),Quaternion.identity);
+                                        audioController.trocaFaixa.Play();
                                     }
                                     else{
                                         fileira=0;
                                         rb.Move(new Vector3(0,transform.position.y,0),Quaternion.identity);
+                                        audioController.trocaFaixa.Play();
                                     }
                                 }
                             }
@@ -215,24 +246,36 @@ public class PlayerRB : MonoBehaviour
                     }
                 }
             }
+            if(Input.touchCount==4){
+                Touch touch = Input.GetTouch(3);
+                if(touch.phase == TouchPhase.Began){
+                    isInvulnevel=true;
+                    TrocaPistaDebug();
+                }
+            }
         }
         #endif
     }
     void OnCollisionEnter(Collision colisao){
         if(colisao.collider.CompareTag("Chao")){
             isPulando=false;
+            animator.ResetTrigger("Jumped");
         }
     }
     void OnTriggerEnter(Collider collider){
         if(collider.CompareTag("Obstaculo")){
             //Debug.Log("bati num obstaculo");
             if(!podeMorrer){
-                Handheld.Vibrate();
+                if(GameController.gameController.canVibrate)
+                    Handheld.Vibrate();
                 TomarHit();
+                animator.SetTrigger("tookDamage");
             }
             else{
-                if(!alhoAtivo)
+                if(!alhoAtivo){
                     Perder();
+                    animator.SetTrigger("Died");
+                }
             }
         }
     }
@@ -240,6 +283,7 @@ public class PlayerRB : MonoBehaviour
     void TomarHit(){
         if(!isInvulnevel){
             podeMorrer=true;
+            audioController.tomaDano.Play();
         }
         Invoke("RestauraVida",tempoMorte);
         //rb.constraints=RigidbodyConstraints.FreezePositionY;
@@ -249,6 +293,7 @@ public class PlayerRB : MonoBehaviour
     }
     void RestauraVida(){
         podeMorrer=false;
+        animator.ResetTrigger("tookDamage");
         GameController.gameController.vampiro.AfastarPlayer();
     }
     void VoltaAColidir(){
@@ -258,6 +303,10 @@ public class PlayerRB : MonoBehaviour
     }
     void Perder(){
         canInput=false;
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+        animator.applyRootMotion=true;
+        audioController.tomaDano.Play();
+        audioController.gritoMorte.Play(44100);
         GameController.gameController.vampiro.AlcancarPlayer();
         GameController.gameController.Perder();
     }
@@ -269,5 +318,22 @@ public class PlayerRB : MonoBehaviour
     }
     public void AtivarAlho(){
         alhoAtivo=true;
+    }
+    public void TrocaPistaDebug(){
+        timerTroca=timer;
+        Pista.TrocaTipoPista();
+    }
+    public void Reset(){
+        canInput=true;
+        animator.applyRootMotion=false;
+        animator.SetTrigger("Reset");
+        RestauraVida();
+        VoltaAColidir();
+        AtivarAlho();
+        transform.position=new Vector3(0,0.181f,0);
+        transform.rotation= Quaternion.identity;
+        transform.localScale=new Vector3(1.2f,1.2f,1.2f);
+        carmilleChild.transform.position=new Vector3(0,0,0);
+        carmilleChild.transform.rotation= Quaternion.identity;
     }
 }

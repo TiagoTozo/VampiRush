@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,13 +9,17 @@ public class GameController : MonoBehaviour
     public Vampiro vampiro;
     public Pista pista;
     public UIController uiController;
+    public AudioController audioController;
     public static GameController gameController;
-    float pistaSpeed =4f;
-    float tempoPraAcabar =2f;
+    bool jogoPausado;
+    float pistaSpeed =5f;
+    float tempoPraAcabar =4f;
     public float valorFileira = 4;
     public float DuracaoIma = 10f;
     public float DuracaoCapa = 8f;
     public float DuracaoAlho = 6f;
+    public bool canVibrate = true;
+    int contadorClicks = 0;
     void Awake(){
         GameController.gameController=this;
     }
@@ -34,7 +37,8 @@ public class GameController : MonoBehaviour
         Pista.speed = 0f;
         Invoke("PararTempo",tempoPraAcabar);
         Invoke("AbrirMenuDerrota",tempoPraAcabar);
-        Vibration.Vibrate((long)tempoPraAcabar*1000);
+        if(canVibrate)
+            Vibration.Vibrate((long)tempoPraAcabar*1000);
     }
     public void PararTempo(){
         Time.timeScale=0;
@@ -51,12 +55,34 @@ public class GameController : MonoBehaviour
         Pista.nPistas=1;
         SceneManager.LoadScene("Jogo");
     }
-    public void Pausar(){
-        PararTempo();
-        uiController.Pausar();
+    public void InteragirPausar(){
+        if(!jogoPausado){
+            PararTempo();
+            uiController.InteragirPausar();
+            jogoPausado=true;
+        }
+        else{
+            VoltarTempo();
+            uiController.InteragirPausar();
+            jogoPausado=false;
+        }
     }
-    public void Despausar(){
-        uiController.Despausar();
-        VoltarTempo();
+    public void Continuar(){
+        if(Moeda.TotalMoedas>=100||contadorClicks>=10){
+            Pista.speed=pistaSpeed;
+            VoltarTempo();
+            uiController.painelDerrota.SetActive(false);
+            //SceneManager.LoadScene("Jogo");
+            jogador.Reset();
+            if(Moeda.TotalMoedas>=100)
+                Moeda.TotalMoedas-=100;
+            contadorClicks=0;
+            uiController.AtualizarMoeda(Moeda.TotalMoedas);
+        }
+        else{
+            contadorClicks++;
+        }
     }
+    
+    
 }

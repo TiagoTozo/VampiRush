@@ -12,11 +12,14 @@ public class Vampiro : MonoBehaviour
     Vector3 posForaTela, posAtrasJogador, posJogador,alvo;
     float speed = 5f;
     float distForaTela=10f;
+    Animator animator;
+    bool pulando;
     void Awake(){
         //GameController.gameController.vampiro=this;
     }
     void Start()
     {
+        animator=GetComponent<Animator>();
         GameController.gameController.vampiro=this;
         aproximaPlayer=false;
         alcancaPlayer=false;
@@ -40,6 +43,14 @@ public class Vampiro : MonoBehaviour
                     alvo.y=0;
                 }
             }
+        }
+        if(transform.position.y>0.5f&&!pulando){
+            animator.SetTrigger("Jumped");
+            pulando=true;
+        }
+        if(transform.position.y<0.5f&&pulando){
+            animator.ResetTrigger("Jumped");
+            pulando=false;
         }
         Vector3 dir = alvo-transform.position;
         //if(afastaPlayer){
